@@ -1,3 +1,6 @@
+using AutoMapper;
+using Broot.API.Infrastructer;
+using Broot.Service.User;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +29,15 @@ namespace Broot.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Choosing which profile we will use
+            var _mappingProfile = new MapperConfiguration(mp => { mp.AddProfile(new MappingProfile()); });
+            // Creating mapper
+            IMapper mapper = _mappingProfile.CreateMapper();
+            // Injecting our mapper to project
+            services.AddSingleton(mapper);
+
+            // Injecting our UserService to project
+            services.AddTransient<IUserService, UserService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
