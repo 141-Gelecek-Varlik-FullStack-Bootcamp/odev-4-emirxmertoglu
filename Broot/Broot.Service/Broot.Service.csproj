@@ -4,4 +4,18 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Broot.DB\Broot.DB.csproj" />
+    <ProjectReference Include="..\Broot.Model\Broot.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Category\" />
+    <Folder Include="Product\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
 </Project>
