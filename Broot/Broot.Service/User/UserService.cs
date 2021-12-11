@@ -102,5 +102,44 @@ namespace Broot.Service.User
             }
             return result;
         }
+
+        // Delete user.
+        public General<UserDeleteModel> Delete(int id, int updater)
+        {
+            var result = new General<Model.UserModel.UserDeleteModel>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var user = srv.User.SingleOrDefault(u => u.Id == id);
+
+                // Checking if user exists
+                if (user is null)
+                {
+                    result.TotalCount++;
+                    result.ExceptionMessage = "Bu id ile bir kullanici bulunamadi!";
+                    return result;
+                }
+
+                if (user.IsDeleted)
+                {
+                    result.TotalCount++;
+                    result.ExceptionMessage = "Bu kullanici zaten silinmis!";
+                    return result;
+                }
+
+                // Deactivating user account
+                user.IsDeleted = true;
+                user.IsActive = false;
+                user.Udatetime = System.DateTime.Now;
+                user.Uuser = updater;
+
+                // Saving user with new values to db
+                srv.SaveChanges();
+
+                // Updating result values
+                result.Entity = mapper.Map<UserDeleteModel>(user);
+                result.IsSuccess = true;
+            }
+            return result;
+        }
     }
 }

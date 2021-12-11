@@ -15,5 +15,8 @@ namespace Broot.Service.User
         // Update user.
         public General<Broot.Model.UserModel.UserUpdateModel> Update(Broot.Model.UserModel.UserUpdateModel updatedUser, int id, int updater);
 
+        // Delete user.
+        public General<Broot.Model.UserModel.UserDeleteModel> Delete(int id, int updater);
+
     }
 }
