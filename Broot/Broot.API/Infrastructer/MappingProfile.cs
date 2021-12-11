@@ -14,6 +14,18 @@ namespace Broot.API.Infrastructer
             // Login user.
             CreateMap<Broot.Model.UserModel.UserLoginModel, Broot.DB.Entities.User>();
             CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserLoginModel>();
+
+            // Update user.
+            CreateMap<Broot.Model.UserModel.UserUpdateModel, Broot.DB.Entities.User>();
+            CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserUpdateModel>();
+
+            // Delete user.
+            CreateMap<Broot.Model.UserModel.UserDeleteModel, Broot.DB.Entities.User>();
+            CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserDeleteModel>();
+
+            // Get users.
+            CreateMap<Broot.Model.UserModel.UserGetModel, Broot.DB.Entities.User>();
+            CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserGetModel>();
         }
     }
 }
