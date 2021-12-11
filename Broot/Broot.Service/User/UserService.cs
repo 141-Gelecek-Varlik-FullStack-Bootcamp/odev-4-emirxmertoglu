@@ -2,6 +2,7 @@
 using Broot.DB.Entities.DataContext;
 using Broot.Model;
 using Broot.Model.UserModel;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Broot.Service.User
@@ -32,7 +33,6 @@ namespace Broot.Service.User
                 if (srv.User.Any(u => u.Email == newUser.Email && u.IsActive))
                 {
                     result.ExceptionMessage = "Bu mail adresiyle kayitli bir kullanici var.";
-                    result.TotalCount++;
                 }
                 else
                 {
@@ -63,7 +63,6 @@ namespace Broot.Service.User
                 else
                 {
                     result.ExceptionMessage = "Giris basarisiz, kullanici adini ya da sifreyi kontrol edin!";
-                    result.TotalCount++;
                 }
             }
             return result;
@@ -81,7 +80,6 @@ namespace Broot.Service.User
                 if (user is null)
                 {
                     result.ExceptionMessage = "Verilen id numarasiyla iliskili bir kullanici bulunamadi.";
-                    result.TotalCount++;
                     return result;
                 }
 
@@ -114,14 +112,12 @@ namespace Broot.Service.User
                 // Checking if user exists
                 if (user is null)
                 {
-                    result.TotalCount++;
                     result.ExceptionMessage = "Bu id ile bir kullanici bulunamadi!";
                     return result;
                 }
 
                 if (user.IsDeleted)
                 {
-                    result.TotalCount++;
                     result.ExceptionMessage = "Bu kullanici zaten silinmis!";
                     return result;
                 }
@@ -139,6 +135,29 @@ namespace Broot.Service.User
                 result.Entity = mapper.Map<UserDeleteModel>(user);
                 result.IsSuccess = true;
             }
+            return result;
+        }
+
+        // Get users.
+        public General<UserGetModel> Get()
+        {
+            var result = new General<Model.UserModel.UserGetModel>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var users = srv.User.Where(u => u.IsActive && !u.IsDeleted).OrderBy(u => u.Id);
+
+                if (users is null)
+                {
+                    result.ExceptionMessage = "Kullanici verileri cekilemedi!";
+                    return result;
+                }
+
+                // Mapping users
+                result.List = mapper.Map<List<UserGetModel>>(users);
+                result.TotalCount = users.Count();
+                result.IsSuccess = true;
+            }
+
             return result;
         }
     }

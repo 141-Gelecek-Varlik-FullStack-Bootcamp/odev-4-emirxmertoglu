@@ -6,7 +6,7 @@ namespace Broot.Model
     {
         public bool IsSuccess { get; set; }
         public T Entity { get; set; }
-        //public List<T> List { get; set; }
+        public List<T> List { get; set; }
         public int TotalCount { get; set; }
         //public List<string> ValidationErrorList { get; set; }
         public string ExceptionMessage { get; set; }

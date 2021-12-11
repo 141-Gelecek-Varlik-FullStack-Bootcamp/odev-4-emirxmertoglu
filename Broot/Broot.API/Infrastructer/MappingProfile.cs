@@ -22,6 +22,10 @@ namespace Broot.API.Infrastructer
             // Delete user.
             CreateMap<Broot.Model.UserModel.UserDeleteModel, Broot.DB.Entities.User>();
             CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserDeleteModel>();
+
+            // Get users.
+            CreateMap<Broot.Model.UserModel.UserGetModel, Broot.DB.Entities.User>();
+            CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserGetModel>();
         }
     }
 }
