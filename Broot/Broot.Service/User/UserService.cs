@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Broot.DB.Entities.DataContext;
 using Broot.Model;
+using Broot.Model.UserModel;
 using System.Linq;
 
 namespace Broot.Service.User
@@ -14,24 +15,10 @@ namespace Broot.Service.User
             mapper = _mapper;
         }
 
-        // Login user with username and password.
-        public bool Login(string userName, string password)
-        {
-            bool result = false;
-            using (var srv = new BrootContext())
-            {
-                // Checking is there any user with username and password parameters.
-                // Also the user is not deleted and active.
-                result = srv.User.Any(user => !user.IsDeleted && user.IsActive && user.UserName == userName && user.Password == password);
-            }
-
-            return result;
-        }
-
         // Inserting a new user
-        public General<Model.UserModel.User> Insert(Broot.Model.UserModel.User newUser)
+        public General<Model.UserModel.UserCreateModel> Insert(Broot.Model.UserModel.UserCreateModel newUser)
         {
-            var result = new General<Model.UserModel.User>() { IsSuccess=false};
+            var result = new General<Model.UserModel.UserCreateModel>() { IsSuccess=false};
             var model = mapper.Map<Broot.DB.Entities.User>(newUser);
             using (var srv = new BrootContext())
             {
@@ -41,13 +28,46 @@ namespace Broot.Service.User
 
                 // And one more thing is we could use transaction but it becomes costly too. 
 
-                model.Idatetime = System.DateTime.Now;
-                srv.User.Add(model);
-                srv.SaveChanges();
-                result.Entity = mapper.Map<Broot.Model.UserModel.User>(model);
-                result.IsSuccess = true;
+                // Checking the user email exists in db
+                if (srv.User.Any(u => u.Email == newUser.Email && u.IsActive))
+                {
+                    result.ExceptionMessage = "Bu mail adresiyle kayitli bir kullanici var.";
+                    result.TotalCount++;
+                }
+                else
+                {
+                    model.Idatetime = System.DateTime.Now;
+                    model.IsActive = true;
+                    srv.User.Add(model);
+                    srv.SaveChanges();
+                    result.Entity = mapper.Map<Broot.Model.UserModel.UserCreateModel>(model);
+                    result.IsSuccess = true;
+                }
             }
             return result;
         }
+
+
+
+        // Login user.
+        public General<UserLoginModel> Login(UserLoginModel loginUser)
+        {
+            var result = new General<Model.UserModel.UserLoginModel>() { IsSuccess = false };
+            var model = mapper.Map<Broot.DB.Entities.User>(loginUser);
+            using (var srv = new BrootContext())
+            {
+                result.Entity = loginUser;
+                if (srv.User.Any(u => !u.IsDeleted && u.IsActive && u.UserName == loginUser.UserName && u.Password == loginUser.Password))
+                {
+                    result.IsSuccess = true;
+                }
+                else
+                {
+                    result.ExceptionMessage = "Giris basarisiz, kullanici adini ya da sifreyi kontrol edin!";
+                    result.TotalCount++;
+                }
+            }
+            return result;
+        }   
     }
 }
