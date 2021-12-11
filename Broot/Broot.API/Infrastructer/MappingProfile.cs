@@ -18,6 +18,10 @@ namespace Broot.API.Infrastructer
             // Update user.
             CreateMap<Broot.Model.UserModel.UserUpdateModel, Broot.DB.Entities.User>();
             CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserUpdateModel>();
+
+            // Delete user.
+            CreateMap<Broot.Model.UserModel.UserDeleteModel, Broot.DB.Entities.User>();
+            CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserDeleteModel>();
         }
     }
 }
