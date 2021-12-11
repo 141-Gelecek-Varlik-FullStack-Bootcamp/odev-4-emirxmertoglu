@@ -53,7 +53,6 @@ namespace Broot.Service.User
         public General<UserLoginModel> Login(UserLoginModel loginUser)
         {
             var result = new General<Model.UserModel.UserLoginModel>() { IsSuccess = false };
-            var model = mapper.Map<Broot.DB.Entities.User>(loginUser);
             using (var srv = new BrootContext())
             {
                 result.Entity = loginUser;
@@ -68,6 +67,40 @@ namespace Broot.Service.User
                 }
             }
             return result;
-        }   
+        }
+
+
+        // Update user.
+        public General<UserUpdateModel> Update(UserUpdateModel updatedUser, int id, int updater)
+        {
+            var result = new General<Model.UserModel.UserUpdateModel>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var user = srv.User.SingleOrDefault(u => u.Id == id);
+                // Checking user exists
+                if (user is null)
+                {
+                    result.ExceptionMessage = "Verilen id numarasiyla iliskili bir kullanici bulunamadi.";
+                    result.TotalCount++;
+                    return result;
+                }
+
+                // Updating user values
+                user.Name = updatedUser.Name != default ? updatedUser.Name : user.Name;
+                user.UserName = updatedUser.UserName != default ? updatedUser.UserName : user.UserName;
+                user.Email = updatedUser.Email != default ? updatedUser.Email : user.Email;
+                user.Password = updatedUser.Password != default ? updatedUser.Password : user.Password;
+                user.Uuser = updater;
+                user.Udatetime = System.DateTime.Now;
+
+                // Saving user with new values to db
+                srv.SaveChanges();
+
+                // Updating result
+                result.Entity = mapper.Map<UserUpdateModel>(user);
+                result.IsSuccess = true;
+            }
+            return result;
+        }
     }
 }
