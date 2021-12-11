@@ -16,9 +16,17 @@ namespace Broot.API.Controllers
         }
 
         [HttpPost]
-        public General<Broot.Model.UserModel.User> Insert([FromBody] Broot.Model.UserModel.User newUser)
+        [Route("register")]
+        public General<Broot.Model.UserModel.UserCreateModel> Insert([FromBody] Broot.Model.UserModel.UserCreateModel newUser)
         {
             return userService.Insert(newUser);
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public General<Broot.Model.UserModel.UserLoginModel> Login([FromBody] Broot.Model.UserModel.UserLoginModel loginUser)
+        {
+            return userService.Login(loginUser);
         }
     }
 }
