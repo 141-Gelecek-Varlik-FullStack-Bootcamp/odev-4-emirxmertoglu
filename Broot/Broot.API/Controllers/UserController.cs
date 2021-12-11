@@ -28,5 +28,12 @@ namespace Broot.API.Controllers
         {
             return userService.Login(loginUser);
         }
+
+        [HttpPut]
+        public General<Broot.Model.UserModel.UserUpdateModel> Update([FromBody] Broot.Model.UserModel.UserUpdateModel updatedUser, int id, int updater)
+        {
+            return userService.Update(updatedUser, id, updater);
+        }
+
     }
 }
