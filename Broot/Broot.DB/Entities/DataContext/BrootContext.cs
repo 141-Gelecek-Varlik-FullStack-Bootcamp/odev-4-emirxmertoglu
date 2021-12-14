@@ -9,7 +9,6 @@ namespace Broot.DB.Entities.DataContext
 {
     public partial class BrootContext : DbContext
     {
-        // Scaffold-DbContext "Server=.\SQLExpress;Database=Broot;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -ContextDir Entities/DataContext -Context BrootContext -Project Broot.DB -StartupProject Broot.DB -NoPluralize -Force
         public BrootContext()
         {
         }
@@ -70,8 +69,6 @@ namespace Broot.DB.Entities.DataContext
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -81,8 +78,6 @@ namespace Broot.DB.Entities.DataContext
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Idate)
                     .HasColumnType("datetime")
@@ -105,13 +100,13 @@ namespace Broot.DB.Entities.DataContext
                 entity.Property(e => e.Uuser).HasColumnName("UUser");
 
                 entity.HasOne(d => d.Category)
-                    .WithMany()
+                    .WithMany(p => p.Product)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Product_Category");
 
                 entity.HasOne(d => d.IuserNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Product)
                     .HasForeignKey(d => d.Iuser)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Product_User");
