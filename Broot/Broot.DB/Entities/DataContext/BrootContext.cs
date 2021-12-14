@@ -9,6 +9,7 @@ namespace Broot.DB.Entities.DataContext
 {
     public partial class BrootContext : DbContext
     {
+        // Scaffold-DbContext "Server=.\SQLExpress;Database=Broot;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities -ContextDir Entities/DataContext -Context BrootContext -Project Broot.DB -StartupProject Broot.DB -NoPluralize -Force
         public BrootContext()
         {
         }

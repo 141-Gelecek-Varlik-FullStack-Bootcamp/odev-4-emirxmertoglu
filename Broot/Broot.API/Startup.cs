@@ -39,6 +39,12 @@ namespace Broot.API
             // Injecting our UserService to project
             services.AddTransient<IUserService, UserService>();
 
+            // Adding memory cache to project
+            services.AddMemoryCache();
+
+            // Injecting our LoginFilter
+            services.AddScoped<LoginFilter>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
