@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Broot.Model.ProductModel;
 
 namespace Broot.API.Infrastructer
 {
@@ -26,6 +27,11 @@ namespace Broot.API.Infrastructer
             // Get users.
             CreateMap<Broot.Model.UserModel.UserGetModel, Broot.DB.Entities.User>();
             CreateMap<Broot.DB.Entities.User, Broot.Model.UserModel.UserGetModel>();
+
+            // Product
+            CreateMap<InsertProductModel, Broot.DB.Entities.Product>();
+            CreateMap<Broot.DB.Entities.Product, ProductDetail>();
+
         }
     }
 }
