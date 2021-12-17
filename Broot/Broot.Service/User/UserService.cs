@@ -87,95 +87,95 @@ namespace Broot.Service.User
 
 
         // Update user.
-        //public General<UserUpdateModel> Update(UserUpdateModel updatedUser, int id, int updater)
-        //{
-        //    var result = new General<Model.UserModel.UserUpdateModel>() { IsSuccess = false };
-        //    using (var srv = new BrootContext())
-        //    {
-        //        var user = srv.User.SingleOrDefault(u => u.Id == id);
-        //        // Checking user exists
-        //        if (user is null)
-        //        {
-        //            result.ExceptionMessage = "Verilen id numarasiyla iliskili bir kullanici bulunamadi.";
-        //            return result;
-        //        }
+        public General<UserUpdateModel> Update(UserUpdateModel updatedUser, int id, int updater)
+        {
+            var result = new General<Model.UserModel.UserUpdateModel>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var user = srv.User.SingleOrDefault(u => u.Id == id);
+                // Checking user exists
+                if (user is null)
+                {
+                    result.ExceptionMessage = "Verilen id numarasiyla iliskili bir kullanici bulunamadi.";
+                    return result;
+                }
 
-        //        // Updating user values
-        //        user.Name = updatedUser.Name != default ? updatedUser.Name : user.Name;
-        //        user.UserName = updatedUser.UserName != default ? updatedUser.UserName : user.UserName;
-        //        user.Email = updatedUser.Email != default ? updatedUser.Email : user.Email;
-        //        user.Password = updatedUser.Password != default ? updatedUser.Password : user.Password;
-        //        user.Uuser = updater;
-        //        user.Udatetime = System.DateTime.Now;
+                // Updating user values
+                user.Name = updatedUser.Name != default ? updatedUser.Name : user.Name;
+                user.UserName = updatedUser.UserName != default ? updatedUser.UserName : user.UserName;
+                user.Email = updatedUser.Email != default ? updatedUser.Email : user.Email;
+                user.Password = updatedUser.Password != default ? updatedUser.Password : user.Password;
+                user.Uuser = updater;
+                user.Udatetime = System.DateTime.Now;
 
-        //        // Saving user with new values to db
-        //        srv.SaveChanges();
+                // Saving user with new values to db
+                srv.SaveChanges();
 
-        //        // Updating result
-        //        result.Entity = mapper.Map<UserUpdateModel>(user);
-        //        result.IsSuccess = true;
-        //    }
-        //    return result;
-        //}
+                // Updating result
+                result.Entity = mapper.Map<UserUpdateModel>(user);
+                result.IsSuccess = true;
+            }
+            return result;
+        }
 
         // Delete user.
-        //public General<UserDeleteModel> Delete(int id, int updater)
-        //{
-        //    var result = new General<Model.UserModel.UserDeleteModel>() { IsSuccess = false };
-        //    using (var srv = new BrootContext())
-        //    {
-        //        var user = srv.User.SingleOrDefault(u => u.Id == id);
+        public General<UserDeleteModel> Delete(int id, int updater)
+        {
+            var result = new General<Model.UserModel.UserDeleteModel>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var user = srv.User.SingleOrDefault(u => u.Id == id);
 
-        //        // Checking if user exists
-        //        if (user is null)
-        //        {
-        //            result.ExceptionMessage = "Bu id ile bir kullanici bulunamadi!";
-        //            return result;
-        //        }
+                // Checking if user exists
+                if (user is null)
+                {
+                    result.ExceptionMessage = "Bu id ile bir kullanici bulunamadi!";
+                    return result;
+                }
 
-        //        if (user.IsDeleted)
-        //        {
-        //            result.ExceptionMessage = "Bu kullanici zaten silinmis!";
-        //            return result;
-        //        }
+                if (user.IsDeleted)
+                {
+                    result.ExceptionMessage = "Bu kullanici zaten silinmis!";
+                    return result;
+                }
 
-        //        // Deactivating user account
-        //        user.IsDeleted = true;
-        //        user.IsActive = false;
-        //        user.Udatetime = System.DateTime.Now;
-        //        user.Uuser = updater;
+                // Deactivating user account
+                user.IsDeleted = true;
+                user.IsActive = false;
+                user.Udatetime = System.DateTime.Now;
+                user.Uuser = updater;
 
-        //        // Saving user with new values to db
-        //        srv.SaveChanges();
+                // Saving user with new values to db
+                srv.SaveChanges();
 
-        //        // Updating result values
-        //        result.Entity = mapper.Map<UserDeleteModel>(user);
-        //        result.IsSuccess = true;
-        //    }
-        //    return result;
-        //}
+                // Updating result values
+                result.Entity = mapper.Map<UserDeleteModel>(user);
+                result.IsSuccess = true;
+            }
+            return result;
+        }
 
         // Get users.
-        //public General<UserGetModel> Get()
-        //{
-        //    var result = new General<Model.UserModel.UserGetModel>() { IsSuccess = false };
-        //    using (var srv = new BrootContext())
-        //    {
-        //        var users = srv.User.Where(u => u.IsActive && !u.IsDeleted).OrderBy(u => u.Id);
+        public General<UserGetModel> Get()
+        {
+            var result = new General<Model.UserModel.UserGetModel>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var users = srv.User.Where(u => u.IsActive && !u.IsDeleted).OrderBy(u => u.Id);
 
-        //        if (users is null)
-        //        {
-        //            result.ExceptionMessage = "Kullanici verileri cekilemedi!";
-        //            return result;
-        //        }
+                if (users is null)
+                {
+                    result.ExceptionMessage = "Kullanici verileri cekilemedi!";
+                    return result;
+                }
 
-        //        // Mapping users
-        //        result.List = mapper.Map<List<UserGetModel>>(users);
-        //        result.TotalCount = users.Count();
-        //        result.IsSuccess = true;
-        //    }
+                // Mapping users
+                result.List = mapper.Map<List<UserGetModel>>(users);
+                result.TotalCount = users.Count();
+                result.IsSuccess = true;
+            }
 
-        //    return result;
-        //}
+            return result;
+        }
     }
 }
