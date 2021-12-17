@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Broot.Model.CategoryModel;
 using Broot.Model.ProductModel;
 
 namespace Broot.API.Infrastructer
@@ -31,6 +32,10 @@ namespace Broot.API.Infrastructer
             // Product
             CreateMap<InsertProductModel, Broot.DB.Entities.Product>();
             CreateMap<Broot.DB.Entities.Product, ProductDetail>();
+
+            //Category
+            CreateMap<InsertCategory, Broot.DB.Entities.Category>();
+            CreateMap<Broot.DB.Entities.Category, CategoryDetail>();
 
         }
     }
