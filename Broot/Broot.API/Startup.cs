@@ -1,5 +1,6 @@
 using AutoMapper;
 using Broot.API.Infrastructer;
+using Broot.Service.Category;
 using Broot.Service.Product;
 using Broot.Service.User;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,9 @@ namespace Broot.API
 
             // Injecting our ProductService to project
             services.AddTransient<IProductService, ProductService>();
+
+            // Injecting our CategoryService to project
+            services.AddTransient<ICategoryService, CategoryService>();
 
             // Adding memory cache to project
             services.AddMemoryCache();
