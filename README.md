@@ -1,13 +1,16 @@
 # Sifirdan Bir Proje Yapmak
 
-Bootcamp'de verilen ucuncu odev. Bu projedeki amac sifirdan bir proje olusturup, katmanli mimari ile projeyi gelistirmektir.
+Bootcamp'de verilen dorduncu odev. 
+Bu projedeki amac;
+* Kullanicilarin sisteme login oldugu ve bu login islemini bir attribute ile kontrol edildigi bir api ayaga kaldirmak,
+* Urunlerin listelendigi bir api yapmak (1 sayfalama, 1 siralama, 1 filtreleme),
 
 ## Kurulum
 
 Oncelikle projeyi clonelayin.
 
 ```bash
-https://github.com/141-Gelecek-Varlik-FullStack-Bootcamp/odev-3-emirxmertoglu.git
+https://github.com/141-Gelecek-Varlik-FullStack-Bootcamp/odev-4-emirxmertoglu.git
 ```
 
 ## Kullanim
