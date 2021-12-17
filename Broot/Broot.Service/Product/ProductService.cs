@@ -13,11 +13,14 @@ namespace Broot.Service.Product
         {
             mapper = _mapper;
         }
+
+        // Get product by id
         public General<ProductDetail> GetById(int id)
         {
             throw new System.NotImplementedException();
         }
 
+        // Insert product
         public General<ProductDetail> Insert(InsertProductModel newProduct)
         {
             var result = new General<ProductDetail>() { IsSuccess = false };
@@ -45,6 +48,7 @@ namespace Broot.Service.Product
             return result;
         }
 
+        // List products
         public General<ListProductModel> List()
         {
             throw new System.NotImplementedException();
