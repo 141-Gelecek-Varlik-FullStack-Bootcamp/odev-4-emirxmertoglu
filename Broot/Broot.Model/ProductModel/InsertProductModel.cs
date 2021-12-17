@@ -8,7 +8,6 @@ namespace Broot.Model.ProductModel
 {
     public class InsertProductModel
     {
-        public int Id { get; set; }
         public int CategoryId { get; set; }
         public string DisplayName { get; set; }
         public string Description { get; set; }
