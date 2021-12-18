@@ -37,6 +37,12 @@ namespace Broot.API.Controllers
             return categoryService.Delete(id, updater);
         }
 
+        [HttpGet]
+        public General<CategoryDetail> Get()
+        {
+            return categoryService.Get();
+        }
+
 
     }
 }
