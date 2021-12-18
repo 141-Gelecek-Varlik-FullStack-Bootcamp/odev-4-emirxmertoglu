@@ -23,5 +23,8 @@ namespace Broot.Service.Product
         // Sort Products
         public General<ListProductModel> Sort(string sortBy);
 
+        // Filter Products
+        public General<ListProductModel> Filter(string filterBy);
+
     }
 }

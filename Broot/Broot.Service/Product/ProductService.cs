@@ -216,5 +216,43 @@ namespace Broot.Service.Product
 
             return result;
         }
+
+        public General<ListProductModel> Filter(string filterBy)
+        {
+            var result = new General<ListProductModel>() { IsSuccess = false };
+
+            // Check filter parameter
+            if (filterBy is null)
+            {
+                result.ExceptionMessage = "Filtreleme parametresini bos birakmayiniz!";
+                return result;
+            }
+
+            using (var srv = new BrootContext())
+            {
+                // Get products (which products the active state is true)
+                var products = srv.Product.Where(p => p.IsActive && !p.IsDeleted && p.DisplayName.Contains(filterBy)).OrderBy(p => p.DisplayName);
+
+                // Check, did we get the products data?
+                if (products is null)
+                {
+                    result.ExceptionMessage = "Urunlerin verileri cekilemedi!";
+                    return result;
+                }
+
+                if (products.Count() == 0)
+                {
+                    result.ExceptionMessage = $"Girdiginiz parametre degerini ({filterBy}) iceren herhangi bir urun yok!";
+                    return result;
+                }
+
+                // Mapping products
+                result.List = mapper.Map<List<ListProductModel>>(products);
+                result.TotalCount = products.Count();
+                result.IsSuccess = true;
+            }
+
+            return result;
+        }
     }
 }
