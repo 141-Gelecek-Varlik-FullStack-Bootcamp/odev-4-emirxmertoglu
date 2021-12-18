@@ -61,5 +61,11 @@ namespace Broot.API.Controllers
             return productService.Sort(sortBy);
         }
 
+        // Filter Products
+        [HttpGet("Filter")]
+        public General<ListProductModel> Filter([FromQuery] string filterBy)
+        {
+            return productService.Filter(filterBy);
+        }
     }
 }
