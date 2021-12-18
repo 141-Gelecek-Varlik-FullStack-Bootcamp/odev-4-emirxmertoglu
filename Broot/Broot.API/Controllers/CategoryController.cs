@@ -1,4 +1,5 @@
 ﻿using Broot.Model;
+using Broot.Model.CategoryModel;
 using Broot.Service.Category;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +16,20 @@ namespace Broot.API.Controllers
         }
 
         [HttpPost]
-        public General<Model.CategoryModel.CategoryDetail> Insert([FromBody] Model.CategoryModel.InsertCategory newCategory)
+        public General<CategoryDetail> Insert([FromBody] InsertCategory newCategory)
         {
-            General<Model.CategoryModel.CategoryDetail> response = new();
+            General<CategoryDetail> response = new();
 
             response = categoryService.Insert(newCategory);
 
             return response;
         }
+
+        [HttpPut("{id}, {updater}")]
+        public General<CategoryDetail> Uptade([FromBody] InsertCategory updatedCategory, int id, int updater)
+        {
+            return categoryService.Uptade(updatedCategory, id, updater);
+        }
+
     }
 }
