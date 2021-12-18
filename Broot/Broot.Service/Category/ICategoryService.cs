@@ -13,5 +13,8 @@ namespace Broot.Service.Category
 
         // Delete Category
         public General<CategoryDetail> Delete(int id, int updater);
+
+        // Get Categories
+        public General<CategoryDetail> Get();
     }
 }

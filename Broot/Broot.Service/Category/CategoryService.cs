@@ -2,6 +2,7 @@
 using Broot.DB.Entities.DataContext;
 using Broot.Model;
 using Broot.Model.CategoryModel;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Broot.Service.Category
@@ -109,6 +110,29 @@ namespace Broot.Service.Category
                 result.Entity = mapper.Map<CategoryDetail>(category);
                 result.IsSuccess = true;
             }
+            return result;
+        }
+
+        public General<CategoryDetail> Get()
+        {
+            var result = new General<CategoryDetail>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                // Get categories which categories state is active & order by id
+                var categories = srv.Category.Where(c => c.IsActive && !c.IsDeleted).OrderBy(c => c.Id);
+
+                if (categories is null)
+                {
+                    result.ExceptionMessage = "Kategori verileri cekilemedi!";
+                    return result;
+                }
+
+                // Mapping categories
+                result.List = mapper.Map<List<CategoryDetail>>(categories);
+                result.TotalCount = categories.Count();
+                result.IsSuccess = true;
+            }
+
             return result;
         }
     }
