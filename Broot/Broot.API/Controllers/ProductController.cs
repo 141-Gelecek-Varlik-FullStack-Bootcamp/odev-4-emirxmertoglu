@@ -47,5 +47,12 @@ namespace Broot.API.Controllers
             return productService.Update(updatedProduct, id, updater);
         }
 
+        // Delete Product
+        [HttpDelete("{id}")]
+        public General<ProductDetail> Delete(int id, int updater)
+        {
+            return productService.Delete(id, updater);
+        }
+
     }
 }
