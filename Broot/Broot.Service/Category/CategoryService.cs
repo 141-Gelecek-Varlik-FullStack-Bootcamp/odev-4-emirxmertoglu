@@ -14,6 +14,7 @@ namespace Broot.Service.Category
         {
             mapper = _mapper;
         }
+
         // Insert Category
         public General<CategoryDetail> Insert(InsertCategory newCategory)
         {
@@ -68,6 +69,43 @@ namespace Broot.Service.Category
                 srv.SaveChanges();
 
                 // Updating result
+                result.Entity = mapper.Map<CategoryDetail>(category);
+                result.IsSuccess = true;
+            }
+            return result;
+        }
+
+        // Delete Category
+        public General<CategoryDetail> Delete(int id, int updater)
+        {
+            var result = new General<CategoryDetail>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var category = srv.Category.SingleOrDefault(c => c.Id == id);
+
+                // Checking if category exists
+                if (category is null)
+                {
+                    result.ExceptionMessage = "Bu id ile bir kategori bulunamadi!";
+                    return result;
+                }
+
+                if (category.IsDeleted)
+                {
+                    result.ExceptionMessage = "Bu kategori zaten silinmis!";
+                    return result;
+                }
+
+                // Deactivating category
+                category.IsDeleted = true;
+                category.IsActive = false;
+                category.Udate = System.DateTime.Now;
+                category.Uuser = updater;
+
+                // Saving category with new values to db
+                srv.SaveChanges();
+
+                // Updating result values
                 result.Entity = mapper.Map<CategoryDetail>(category);
                 result.IsSuccess = true;
             }

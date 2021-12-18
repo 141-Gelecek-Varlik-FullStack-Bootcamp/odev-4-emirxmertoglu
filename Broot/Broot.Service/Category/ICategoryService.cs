@@ -11,5 +11,7 @@ namespace Broot.Service.Category
         // Update Category
         public General<CategoryDetail> Uptade(InsertCategory updatedCategory, int id, int updater);
 
+        // Delete Category
+        public General<CategoryDetail> Delete(int id, int updater);
     }
 }
