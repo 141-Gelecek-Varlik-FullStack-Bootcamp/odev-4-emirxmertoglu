@@ -28,8 +28,7 @@ namespace Broot.API.Controllers
         [HttpGet]
         public General<Model.ProductModel.ListProductModel> GetList()
         {
-            General<Model.ProductModel.ListProductModel> response = new();
-            return response;
+            return productService.List();
         }
 
         [HttpGet("{id}")]
