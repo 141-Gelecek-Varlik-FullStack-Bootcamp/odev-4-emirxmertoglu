@@ -47,6 +47,7 @@ namespace Broot.Service.Category
             return result;
         }
 
+        // Update Category
         public General<CategoryDetail> Uptade(InsertCategory updatedCategory, int id, int updater)
         {
             var result = new General<CategoryDetail>() { IsSuccess = false };
@@ -113,6 +114,7 @@ namespace Broot.Service.Category
             return result;
         }
 
+        // Get All Categories
         public General<CategoryDetail> Get()
         {
             var result = new General<CategoryDetail>() { IsSuccess = false };
