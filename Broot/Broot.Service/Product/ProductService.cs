@@ -90,5 +90,52 @@ namespace Broot.Service.Product
 
             return result;
         }
+
+        public General<ProductDetail> Update(InsertProductModel updatedProduct, int id, int updater)
+        {
+            var result = new General<ProductDetail>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                // Checking the user who is updating product is exists?
+                var user = srv.User.SingleOrDefault(u => u.Id == updater && u.IsActive && !u.IsDeleted);
+                if (user is null)
+                {
+                    result.ExceptionMessage = "Verilen id numarasiyla iliskili bir kullanici bulunamadi, urunu guncelleyen kullaniciyi kontrol edin!";
+                    return result;
+                }
+
+                var product = srv.Product.SingleOrDefault(p => p.Id == id);
+                // Checking the product is exists?
+                if (product is null)
+                {
+                    result.ExceptionMessage = "Verilen id numarasiyla iliskili bir urun bulunamadi!";
+                    return result;
+                }
+
+                // Updating product values
+                product.CategoryId = updatedProduct.CategoryId != default ? updatedProduct.CategoryId : product.CategoryId;
+                product.DisplayName = updatedProduct.DisplayName != default ? updatedProduct.DisplayName : product.DisplayName;
+                product.Name = updatedProduct.DisplayName.ToLower();
+                product.Description = updatedProduct.Description != default ? updatedProduct.Description : product.Description;
+                product.Price = updatedProduct.Price != default ? updatedProduct.Price : product.Price;
+                product.Stock = updatedProduct.Stock != default ? updatedProduct.Stock : product.Stock;
+
+                product.Udate = System.DateTime.Now;
+                product.Uuser = updater;
+
+                // Saving product with new values to db
+                srv.SaveChanges();
+
+                // Updating result
+                result.Entity = mapper.Map<ProductDetail>(product);
+                result.IsSuccess = true;
+            }
+            return result;
+        }
+
+        public General<ProductDetail> Delete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
