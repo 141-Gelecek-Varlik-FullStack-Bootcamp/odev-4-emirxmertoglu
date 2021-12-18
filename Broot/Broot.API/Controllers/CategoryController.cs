@@ -15,6 +15,7 @@ namespace Broot.API.Controllers
             categoryService = _categoryService;
         }
 
+        // Insert Category
         [HttpPost]
         public General<CategoryDetail> Insert([FromBody] InsertCategory newCategory)
         {
@@ -25,18 +26,21 @@ namespace Broot.API.Controllers
             return response;
         }
 
+        // Update Category
         [HttpPut("{id}")]
         public General<CategoryDetail> Uptade([FromBody] InsertCategory updatedCategory, int id, int updater)
         {
             return categoryService.Uptade(updatedCategory, id, updater);
         }
 
+        // Delete Category
         [HttpDelete("{id}")]
         public General<CategoryDetail> Delete(int id, int updater)
         {
             return categoryService.Delete(id, updater);
         }
 
+        // Get All Categories
         [HttpGet]
         public General<CategoryDetail> Get()
         {
