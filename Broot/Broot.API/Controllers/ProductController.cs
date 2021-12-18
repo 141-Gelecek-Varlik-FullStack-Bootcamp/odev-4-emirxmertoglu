@@ -32,11 +32,10 @@ namespace Broot.API.Controllers
             return response;
         }
 
-        [HttpGet("id: int")]
+        [HttpGet("{id}")]
         public General<Model.ProductModel.ProductDetail> GetById(int id)
         {
-            General<Model.ProductModel.ProductDetail> response = new();
-            return response;
+            return productService.GetById(id);
         }
     }
 }
