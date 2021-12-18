@@ -2,6 +2,7 @@
 using Broot.DB.Entities.DataContext;
 using Broot.Model;
 using Broot.Model.ProductModel;
+using System.Linq;
 
 namespace Broot.Service.Product
 {
@@ -17,7 +18,24 @@ namespace Broot.Service.Product
         // Get product by id
         public General<ProductDetail> GetById(int id)
         {
-            throw new System.NotImplementedException();
+            var result = new General<ProductDetail>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var product = srv.Product.SingleOrDefault(p => p.Id == id);
+                // Checking the product is exists?
+                if (product is null)
+                {
+                    result.ExceptionMessage = "Verilen id numarasiyla iliskili bir urun bulunamadi.";
+                    return result;
+                }
+
+                else
+                {
+                    result.Entity = mapper.Map<ProductDetail>(product);
+                    result.IsSuccess = true;
+                }
+            }
+            return result;
         }
 
         // Insert product
