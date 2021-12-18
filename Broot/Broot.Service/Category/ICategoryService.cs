@@ -5,8 +5,11 @@ namespace Broot.Service.Category
 {
     public interface ICategoryService
     {
-        // Insert category
+        // Insert Category
         public General<CategoryDetail> Insert(InsertCategory newCategory);
+
+        // Update Category
+        public General<CategoryDetail> Uptade(InsertCategory updatedCategory, int id, int updater);
 
     }
 }
