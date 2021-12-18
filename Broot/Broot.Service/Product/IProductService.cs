@@ -19,5 +19,9 @@ namespace Broot.Service.Product
 
         // Delete Product
         public General<ProductDetail> Delete(int id, int updater);
+
+        // Sort Products
+        public General<ListProductModel> Sort(string sortBy);
+
     }
 }
