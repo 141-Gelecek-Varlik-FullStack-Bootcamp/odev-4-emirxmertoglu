@@ -2,6 +2,7 @@
 using Broot.DB.Entities.DataContext;
 using Broot.Model;
 using Broot.Model.ProductModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -217,6 +218,7 @@ namespace Broot.Service.Product
             return result;
         }
 
+        // Filter Products
         public General<ListProductModel> Filter(string filterBy)
         {
             var result = new General<ListProductModel>() { IsSuccess = false };
@@ -243,6 +245,51 @@ namespace Broot.Service.Product
                 if (products.Count() == 0)
                 {
                     result.ExceptionMessage = $"Girdiginiz parametre degerini ({filterBy}) iceren herhangi bir urun yok!";
+                    return result;
+                }
+
+                // Mapping products
+                result.List = mapper.Map<List<ListProductModel>>(products);
+                result.TotalCount = products.Count();
+                result.IsSuccess = true;
+            }
+
+            return result;
+        }
+
+        // Paging Products
+        public General<ListProductModel> Paging(int productNumberPerPage, int currentPage)
+        {
+            var result = new General<ListProductModel>() { IsSuccess = false };
+
+            double productCount = 0;
+            double pageNumber = 0;
+
+            using (var srv = new BrootContext())
+            {
+                // Get total product count
+                productCount = srv.Product.Count();
+
+                // Calculate page number
+                pageNumber = Math.Ceiling(productCount / productNumberPerPage);
+
+                // Get products
+                var products = srv.Product
+                    .Where(p => p.IsActive && !p.IsDeleted)
+                    .OrderBy(p => p.Id).Skip((currentPage - 1) * productNumberPerPage)
+                    .Take(productNumberPerPage);
+
+                // Check db connection
+                if (products is null)
+                {
+                    result.ExceptionMessage = "Urunlerin verileri cekilemedi!";
+                    return result;
+                }
+
+                // Check, are there any products?
+                if (products.Count() == 0)
+                {
+                    result.ExceptionMessage = "Girdiginiz sayfalama parametreleri kontrol edin!";
                     return result;
                 }
 

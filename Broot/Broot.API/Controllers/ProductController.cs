@@ -67,5 +67,12 @@ namespace Broot.API.Controllers
         {
             return productService.Filter(filterBy);
         }
+
+        // Paging Products
+        [HttpGet("Paging")]
+        public General<ListProductModel> Paging([FromQuery] int productNumberPerPage, [FromQuery] int currentPage)
+        {
+            return productService.Paging(productNumberPerPage, currentPage);
+        }
     }
 }
