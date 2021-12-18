@@ -1,5 +1,5 @@
-﻿using Broot.API.Infrastructer;
-using Broot.Model;
+﻿using Broot.Model;
+using Broot.Model.ProductModel;
 using Broot.Service.Product;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,26 +15,37 @@ namespace Broot.API.Controllers
             productService = _productService;
         }
 
+        // Insert Product
         [HttpPost]
-        public General<Model.ProductModel.ProductDetail> Insert([FromBody] Model.ProductModel.InsertProductModel newProduct)
+        public General<ProductDetail> Insert([FromBody] InsertProductModel newProduct)
         {
-            General<Model.ProductModel.ProductDetail> response = new();
+            General<ProductDetail> response = new();
 
             response = productService.Insert(newProduct);
 
             return response;
         }
 
+        // Get Products
         [HttpGet]
-        public General<Model.ProductModel.ListProductModel> GetList()
+        public General<ListProductModel> GetList()
         {
             return productService.List();
         }
 
+        // Get Product by Id
         [HttpGet("{id}")]
-        public General<Model.ProductModel.ProductDetail> GetById(int id)
+        public General<ProductDetail> GetById(int id)
         {
             return productService.GetById(id);
         }
+
+        // Update Product
+        [HttpPut("{id}")]
+        public General<ProductDetail> Update([FromBody] InsertProductModel updatedProduct, int id, int updater)
+        {
+            return productService.Update(updatedProduct, id, updater);
+        }
+
     }
 }
