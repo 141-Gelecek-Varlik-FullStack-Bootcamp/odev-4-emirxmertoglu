@@ -16,7 +16,7 @@ namespace Broot.Service.Product
             mapper = _mapper;
         }
 
-        // Get product by id
+        // Get Product by Id
         public General<ProductDetail> GetById(int id)
         {
             var result = new General<ProductDetail>() { IsSuccess = false };
@@ -39,7 +39,7 @@ namespace Broot.Service.Product
             return result;
         }
 
-        // Insert product
+        // Insert Product
         public General<ProductDetail> Insert(InsertProductModel newProduct)
         {
             var result = new General<ProductDetail>() { IsSuccess = false };
@@ -67,7 +67,7 @@ namespace Broot.Service.Product
             return result;
         }
 
-        // List products
+        // List Products
         public General<ListProductModel> List()
         {
             var result = new General<ListProductModel>() { IsSuccess = false };
@@ -91,6 +91,7 @@ namespace Broot.Service.Product
             return result;
         }
 
+        // Update Product
         public General<ProductDetail> Update(InsertProductModel updatedProduct, int id, int updater)
         {
             var result = new General<ProductDetail>() { IsSuccess = false };
@@ -133,6 +134,7 @@ namespace Broot.Service.Product
             return result;
         }
 
+        // Delete Product
         public General<ProductDetail> Delete(int id, int updater)
         {
             var result = new General<ProductDetail>() { IsSuccess = false };
@@ -166,6 +168,52 @@ namespace Broot.Service.Product
                 result.Entity = mapper.Map<ProductDetail>(product);
                 result.IsSuccess = true;
             }
+            return result;
+        }
+
+        // Sort Products
+        public General<ListProductModel> Sort(string sortBy)
+        {
+            var result = new General<ListProductModel>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                // Get products (which products the active state is true)
+                var products = srv.Product.Where(p => p.IsActive && !p.IsDeleted);
+
+                // Check, did we get the products data?
+                if (products is null)
+                {
+                    result.ExceptionMessage = "Urunlerin verileri cekilemedi!";
+                    return result;
+                }
+
+                // Sort products by string parameter
+                switch (sortBy)
+                {
+                    case "CategoryId":
+                        products = products.OrderBy(p => p.CategoryId);
+                        break;
+                    case "DisplayName":
+                        products = products.OrderBy(p => p.DisplayName);
+                        break;
+                    case "Price":
+                        products = products.OrderBy(p => p.Price);
+                        break;
+                    case "Stock":
+                        products = products.OrderBy(p => p.Stock);
+                        break;
+                    default:
+                        products = products.OrderBy(p => p.Id);
+                        result.ExceptionMessage = "Dogru bir siralama parametresi girmediginiz icin urun idlerine gore siralama yapildi!";
+                        break;
+                }
+
+                // Mapping products
+                result.List = mapper.Map<List<ListProductModel>>(products);
+                result.TotalCount = products.Count();
+                result.IsSuccess = true;
+            }
+
             return result;
         }
     }
