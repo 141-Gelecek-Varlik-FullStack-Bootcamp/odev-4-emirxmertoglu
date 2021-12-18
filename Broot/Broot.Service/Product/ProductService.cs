@@ -133,9 +133,40 @@ namespace Broot.Service.Product
             return result;
         }
 
-        public General<ProductDetail> Delete(int id)
+        public General<ProductDetail> Delete(int id, int updater)
         {
-            throw new System.NotImplementedException();
+            var result = new General<ProductDetail>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                var product = srv.Product.SingleOrDefault(p => p.Id == id);
+
+                // Checking if category exists
+                if (product is null)
+                {
+                    result.ExceptionMessage = "Bu id ile bir urun bulunamadi!";
+                    return result;
+                }
+
+                if (product.IsDeleted)
+                {
+                    result.ExceptionMessage = "Bu urun zaten silinmis!";
+                    return result;
+                }
+
+                // Deactivating product
+                product.IsDeleted = true;
+                product.IsActive = false;
+                product.Udate = System.DateTime.Now;
+                product.Uuser = updater;
+
+                // Saving product with new values to db
+                srv.SaveChanges();
+
+                // Updating result values
+                result.Entity = mapper.Map<ProductDetail>(product);
+                result.IsSuccess = true;
+            }
+            return result;
         }
     }
 }
