@@ -2,6 +2,7 @@
 using Broot.DB.Entities.DataContext;
 using Broot.Model;
 using Broot.Model.ProductModel;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Broot.Service.Product
@@ -69,7 +70,25 @@ namespace Broot.Service.Product
         // List products
         public General<ListProductModel> List()
         {
-            throw new System.NotImplementedException();
+            var result = new General<ListProductModel>() { IsSuccess = false };
+            using (var srv = new BrootContext())
+            {
+                // Get products (which products the active state is true & order products by id)
+                var products = srv.Product.Where(p => p.IsActive && !p.IsDeleted).OrderBy(p => p.Id);
+
+                if (products is null)
+                {
+                    result.ExceptionMessage = "Urunlerin verileri cekilemedi!";
+                    return result;
+                }
+
+                // Mapping products
+                result.List = mapper.Map<List<ListProductModel>>(products);
+                result.TotalCount = products.Count();
+                result.IsSuccess = true;
+            }
+
+            return result;
         }
     }
 }
