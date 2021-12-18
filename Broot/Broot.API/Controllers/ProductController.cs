@@ -54,5 +54,12 @@ namespace Broot.API.Controllers
             return productService.Delete(id, updater);
         }
 
+        // Sort Products
+        [HttpGet("Sort")]
+        public General<ListProductModel> Sort([FromQuery] string sortBy)
+        {
+            return productService.Sort(sortBy);
+        }
+
     }
 }
