@@ -32,6 +32,7 @@ namespace Broot.API.Infrastructer
             // Product
             CreateMap<InsertProductModel, Broot.DB.Entities.Product>();
             CreateMap<Broot.DB.Entities.Product, ProductDetail>();
+            CreateMap<Broot.DB.Entities.Product, ListProductModel>();
 
             //Category
             CreateMap<InsertCategory, Broot.DB.Entities.Category>();
