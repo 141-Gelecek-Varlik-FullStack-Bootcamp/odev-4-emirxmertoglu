@@ -25,11 +25,18 @@ namespace Broot.API.Controllers
             return response;
         }
 
-        [HttpPut("{id}, {updater}")]
+        [HttpPut("{id}")]
         public General<CategoryDetail> Uptade([FromBody] InsertCategory updatedCategory, int id, int updater)
         {
             return categoryService.Uptade(updatedCategory, id, updater);
         }
+
+        [HttpDelete("{id}")]
+        public General<CategoryDetail> Delete(int id, int updater)
+        {
+            return categoryService.Delete(id, updater);
+        }
+
 
     }
 }
