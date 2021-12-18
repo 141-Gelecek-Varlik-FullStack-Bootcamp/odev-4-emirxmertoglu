@@ -5,13 +5,19 @@ namespace Broot.Service.Product
 {
     public interface IProductService
     {
-        // List products
+        // List Products
         public General<ListProductModel> List();
 
-        // Insert product
+        // Insert Product
         public General<ProductDetail> Insert(InsertProductModel newProduct);
 
-        // Get product by id
+        // Get Product by Id
         public General<ProductDetail> GetById(int id);
+
+        // Update Product
+        public General<ProductDetail> Update(InsertProductModel updatedProduct, int id, int updater);
+
+        // Delete Product
+        public General<ProductDetail> Delete(int id, int updater);
     }
 }
