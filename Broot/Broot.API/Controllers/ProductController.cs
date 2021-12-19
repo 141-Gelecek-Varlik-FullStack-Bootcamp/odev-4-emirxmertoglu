@@ -74,5 +74,13 @@ namespace Broot.API.Controllers
         {
             return productService.Paging(productNumberPerPage, currentPage);
         }
+
+        // Apply All Filters to Products
+        [HttpGet("AllFilters")]
+        public General<ListProductModel> AllFilters([FromQuery] string sortBy, [FromQuery] string filterBy, [FromQuery] int productNumberPerPage, [FromQuery] int currentPage)
+        {
+            return productService.AllFilters(sortBy, filterBy, productNumberPerPage, currentPage);
+        }
+
     }
 }
