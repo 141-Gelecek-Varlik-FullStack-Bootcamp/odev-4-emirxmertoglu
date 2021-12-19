@@ -19,11 +19,7 @@ namespace Broot.API.Controllers
         [HttpPost]
         public General<ProductDetail> Insert([FromBody] InsertProductModel newProduct)
         {
-            General<ProductDetail> response = new();
-
-            response = productService.Insert(newProduct);
-
-            return response;
+            return productService.Insert(newProduct);
         }
 
         // Get Products
