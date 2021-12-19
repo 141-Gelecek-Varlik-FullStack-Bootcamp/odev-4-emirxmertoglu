@@ -4,6 +4,7 @@ Bootcamp'de verilen dorduncu odev.
 Bu projedeki amac;
 * Kullanicilarin sisteme login oldugu ve bu login islemini bir attribute ile kontrol edildigi bir api ayaga kaldirmak,
 * Urunlerin listelendigi bir api yapmak (1 sayfalama, 1 siralama, 1 filtreleme),
+* Sayfalama, siralama ve filtrelemenin kombine bir sekilde urunlere uygulandigi bir api yapmak,
 
 ## Kurulum
 
