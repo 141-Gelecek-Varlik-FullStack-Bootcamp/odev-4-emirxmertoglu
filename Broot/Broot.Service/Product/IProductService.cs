@@ -29,6 +29,8 @@ namespace Broot.Service.Product
         // List Products With Pagination 
         public General<ListProductModel> Paging(int productNumberPerPage, int currentPage);
 
+        // Apply All Filters to Products
+        public General<ListProductModel> AllFilters(string sortBy, string filterBy, int productNumberPerPage, int currentPage);
 
     }
 }

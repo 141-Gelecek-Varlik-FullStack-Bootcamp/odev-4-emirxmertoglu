@@ -289,7 +289,73 @@ namespace Broot.Service.Product
                 // Check, are there any products?
                 if (products.Count() == 0)
                 {
-                    result.ExceptionMessage = "Girdiginiz sayfalama parametreleri kontrol edin!";
+                    result.ExceptionMessage = "Girdiginiz sayfalama parametrelerini kontrol edin!";
+                    return result;
+                }
+
+                // Mapping products
+                result.List = mapper.Map<List<ListProductModel>>(products);
+                result.TotalCount = products.Count();
+                result.IsSuccess = true;
+            }
+
+            return result;
+        }
+
+        // Apply All Filters to Products
+        public General<ListProductModel> AllFilters(string sortBy, string filterBy, int productNumberPerPage, int currentPage)
+        {
+            var result = new General<ListProductModel>() { IsSuccess = false };
+
+            double productCount = 0;
+            double pageNumber = 0;
+
+            using (var srv = new BrootContext())
+            {
+                // Get total product count
+                productCount = srv.Product.Count();
+
+                // Calculate page number
+                pageNumber = Math.Ceiling(productCount / productNumberPerPage);
+
+                // Get products
+                var products = srv.Product
+                    .Where(p => p.IsActive && !p.IsDeleted && p.DisplayName.Contains(filterBy)) // Apply the filter
+                    .Skip((currentPage - 1) * productNumberPerPage)
+                    .Take(productNumberPerPage);
+
+                // Sort products by string parameter
+                switch (sortBy)
+                {
+                    case "CategoryId":
+                        products = products.OrderBy(p => p.CategoryId);
+                        break;
+                    case "DisplayName":
+                        products = products.OrderBy(p => p.DisplayName);
+                        break;
+                    case "Price":
+                        products = products.OrderBy(p => p.Price);
+                        break;
+                    case "Stock":
+                        products = products.OrderBy(p => p.Stock);
+                        break;
+                    default:
+                        products = products.OrderBy(p => p.Id);
+                        result.ExceptionMessage = "Dogru bir siralama parametresi girmediginiz icin urun idlerine gore siralama yapildi!";
+                        break;
+                }
+
+                // Check db connection
+                if (products is null)
+                {
+                    result.ExceptionMessage = "Urunlerin verileri cekilemedi!";
+                    return result;
+                }
+
+                // Check, are there any products?
+                if (products.Count() == 0)
+                {
+                    result.ExceptionMessage = "Girdiginiz butun filtreleme parametreleri kontrol edin!";
                     return result;
                 }
 
